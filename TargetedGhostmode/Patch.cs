@@ -40,7 +40,7 @@ namespace TargetedGhostmode
 						    (component.curClass != 2 || !component2.smVisibleToSpec && component.curClass == 2) &&
 						    (!component2.smVisibleWhenTalking ||
 						     component2.smVisibleWhenTalking &&
-						     !component2.GetComponent<Radio>().NetworkisTransmitting) || Methods.CheckHidden(pid2, pid1))
+						     !component2.GetComponent<Radio>().NetworkisTransmitting) || Methods.CheckHidden(pid1, pid2))
 							posData[i] = new PlayerPositionData
 							{
 								position = Vector3.up * 6000f,
@@ -60,14 +60,12 @@ namespace TargetedGhostmode
 						{
 							CharacterClassManager component2 = players[i].GetComponent<CharacterClassManager>();
 							if (posData939[i].position.y < 800f && component2.klasy[component2.curClass].team != Team.SCP && component2.klasy[component2.curClass].team != Team.RIP && !players[i].GetComponent<Scp939_VisionController>().CanSee(component.GetComponent<Scp939PlayerScript>()))
-							{
 								posData939[i] = new PlayerPositionData
 								{
 									position = Vector3.up * 6000f,
 									rotation = 0f,
 									playerID = posData939[i].playerID
 								};
-							}
 						}
 						__instance.CallTargetTransmit(gameObject.GetComponent<NetworkIdentity>().connectionToClient, posData939.ToArray());
 						break;
@@ -80,10 +78,9 @@ namespace TargetedGhostmode
 			return false;
 		}
 
-		public static void PatchMethodUsingHarmony()
+		internal static void PatchMethodUsingHarmony()
 		{
 			HarmonyInstance harmony = HarmonyInstance.Create("com.joker119.ghost");
-			harmony.UnpatchAll();
 			harmony.PatchAll();
 		}
 	}

@@ -10,6 +10,7 @@ namespace TargetedGhostmode
 	{
 		private readonly TargetedGhostmode plugin;
 		public Commands(TargetedGhostmode plugin) => this.plugin = plugin;
+		
 		public string GetUsage() => 
 			"ghost hide (target) (victim) - Hides \"target\" from \"victim\" \n"+
 			"ghost unhide (target) (victim) - Unhides hiding \"target\" from \"victim\"";
@@ -36,7 +37,8 @@ namespace TargetedGhostmode
 					Player target = targets.OrderBy(ply => ply.Name.Length).First();
 					Player victim = victims.OrderBy(ply => ply.Name.Length).First();
 
-					Methods.Hide(target, victim);
+					plugin.Functions.Hide(target, victim);
+					
 
 					return new[] { target.Name + " has been hidden from " + victim.Name };
 				}
@@ -52,7 +54,7 @@ namespace TargetedGhostmode
 					Player target = targets.OrderBy(ply => ply.Name.Length).First();
 					Player victim = victims.OrderBy(ply => ply.Name.Length).First();
 
-					Methods.Unhide(target, victim);
+					plugin.Functions.Unhide(target, victim);
 
 					return new[] { target.Name + " has been un-hidden from " + victim.Name };
 				}
@@ -63,7 +65,7 @@ namespace TargetedGhostmode
 					foreach (Player player1 in players)
 						foreach (Player player2 in players)
 							if (player2 != player1)
-								Methods.Unhide(player1, player2);
+								plugin.Functions.Unhide(player1, player2);
 
 					return new[] { "Unhiding everyone from everyone." };
 				}

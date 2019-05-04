@@ -16,17 +16,17 @@ namespace TargetedGhostmode
 
 	public class TargetedGhostmode : Plugin
 	{
-		private Methods Functions { get; set; }
-		
+		public Methods Functions { get;  private set; }
 		public static Dictionary<int, List<int>> Hidden = new Dictionary<int, List<int>>();
 		
 		public override void Register()
 		{
 			Patch.PatchMethodUsingHarmony();
 			
-			Functions = new Methods();
 			
-			AddCommands(new string[] { "ghost" }, new Commands(this));
+			Functions = new Methods(this);
+			
+			AddCommands(new string[] { "tghost" }, new Commands(this));
 		}
 
 		public override void OnEnable()

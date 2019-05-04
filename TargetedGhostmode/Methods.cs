@@ -5,37 +5,49 @@ namespace TargetedGhostmode
 {
 	public class Methods
 	{
-		public static void Hide(Player target, Player victim)
+		private readonly TargetedGhostmode plugin;
+		public Methods(TargetedGhostmode plugin) => this.plugin = plugin;
+		
+		public void Hide(Player victim, Player target)
 		{
-			if (!TargetedGhostmode.Hidden.ContainsKey(target.PlayerId))
-				TargetedGhostmode.Hidden.Add(target.PlayerId, new List<int>());
-			
-			TargetedGhostmode.Hidden[target.PlayerId].Add(victim.PlayerId);
+			Hide(victim.PlayerId, target.PlayerId);
 		}
 
-		public static void Unhide(Player target, Player victim)
+		public void Hide(int victim, int target)
 		{
-			if (!TargetedGhostmode.Hidden.ContainsKey(target.PlayerId))
+			if (TargetedGhostmode.Hidden.ContainsKey(victim))
+			{
+				TargetedGhostmode.Hidden.Add(victim, new List<int>());
+				plugin.Info("Creating new Hidden dictionary.");
+			}
+			
+			TargetedGhostmode.Hidden[victim].Add(target);
+			plugin.Info("Hiding " + target + " from " + victim);
+		}
+
+		public void Unhide(int victim, int target)
+		{
+			if (!TargetedGhostmode.Hidden.ContainsKey(victim))
+			{
+				plugin.Info("Unable to find dictionary entry for " + victim);
 				return;
-			
-			if (TargetedGhostmode.Hidden[target.PlayerId].Contains(victim.PlayerId))
-				TargetedGhostmode.Hidden[target.PlayerId].Remove(victim.PlayerId);
+			}
+
+			if (TargetedGhostmode.Hidden[victim].Contains(target))
+			{
+				plugin.Info("Unhiding " + target + " from " + victim);
+				TargetedGhostmode.Hidden[victim].Remove(target);
+			}
+			else
+				plugin.Info(target + " is not hidden from " + victim);
 		}
 
-		public static bool CheckHidden(Player target, Player victim)
+		public void Unhide(Player victim, Player target)
 		{
-			if (TargetedGhostmode.Hidden.ContainsKey(target.PlayerId))
-				if (TargetedGhostmode.Hidden[target.PlayerId].Contains(victim.PlayerId))
-					return true;
-			return false;
+			Unhide(victim.PlayerId, target.PlayerId);
 		}
 
-		public static bool CheckHidden(int target, int victim)
-		{
-			if (TargetedGhostmode.Hidden.ContainsKey(target))
-				if (TargetedGhostmode.Hidden[target].Contains(victim))
-					return true;
-			return false;
-		}
+		public static bool CheckHidden(int victim, int target) =>
+			TargetedGhostmode.Hidden.ContainsKey(victim) && TargetedGhostmode.Hidden[victim].Contains(target);
 	}
 }
