@@ -84,6 +84,12 @@ namespace TargetedGhostmode
 						foreach (int pid2 in TargetedGhostmode.Hidden[pid])
 							plugin.Info("Value: " + pid2);
 					}
+
+					if (!TargetedGhostmode.Hidden.ContainsKey(victim.PlayerId))
+						return new[] { "Victim dictionary (" + victim.PlayerId + ") not present." };
+					if (!TargetedGhostmode.Hidden[victim.PlayerId].Contains(target.PlayerId))
+						return new[] { "Target (" + target.PlayerId + ") not in victim (" + victim.PlayerId + ") dictionary's list."};
+					
 					
 					return new[] { Methods.CheckHidden(victim.PlayerId, target.PlayerId).ToString() };
 
