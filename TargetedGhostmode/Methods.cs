@@ -15,12 +15,18 @@ namespace TargetedGhostmode
 
 		public void Hide(int victim, int target)
 		{
-			if (TargetedGhostmode.Hidden.ContainsKey(victim))
+			if (!TargetedGhostmode.Hidden.ContainsKey(victim))
 			{
 				TargetedGhostmode.Hidden.Add(victim, new List<int>());
 				plugin.Info("Creating new Hidden dictionary.");
 			}
-			
+
+			if (TargetedGhostmode.Hidden[victim].Contains(target))
+			{
+				plugin.Info("Target already hidden from victim.");
+				return;
+			}
+
 			TargetedGhostmode.Hidden[victim].Add(target);
 			plugin.Info("Hiding " + target + " from " + victim);
 		}

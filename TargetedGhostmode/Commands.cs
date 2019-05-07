@@ -30,14 +30,14 @@ namespace TargetedGhostmode
 					if (args.Length < 2)
 						return new[] { "You must specify a target (to be hidden) and a victim (to hide from)" };
 
-					List<Player> targets = plugin.Server.GetPlayers(args[1]);
-					List<Player> victims = plugin.Server.GetPlayers(args[2]);
+					List<Player> victims = plugin.Server.GetPlayers(args[1]);
+					List<Player> targets = plugin.Server.GetPlayers(args[2]);
 					if (targets.Count == 0) return new[] { "Target not found." };
 					if (victims.Count == 0) return new[] { "Victim not found" };
 					Player target = targets.OrderBy(ply => ply.Name.Length).First();
 					Player victim = victims.OrderBy(ply => ply.Name.Length).First();
 
-					plugin.Functions.Hide(target, victim);
+					plugin.Functions.Hide(victim, target);
 					
 
 					return new[] { target.Name + " has been hidden from " + victim.Name };
@@ -47,14 +47,14 @@ namespace TargetedGhostmode
 					if (args.Length < 2)
 						return new[] { "You must specify a target (to be hidden) and a victim (to hide from)" };
 
-					List<Player> targets = plugin.Server.GetPlayers(args[1]);
-					List<Player> victims = plugin.Server.GetPlayers(args[2]);
+					List<Player> victims = plugin.Server.GetPlayers(args[1]);
+					List<Player> targets = plugin.Server.GetPlayers(args[2]);
 					if (targets.Count == 0) return new[] { "Target not found." };
 					if (victims.Count == 0) return new[] { "Victim not found" };
 					Player target = targets.OrderBy(ply => ply.Name.Length).First();
 					Player victim = victims.OrderBy(ply => ply.Name.Length).First();
 
-					plugin.Functions.Unhide(target, victim);
+					plugin.Functions.Unhide(victim, target);
 
 					return new[] { target.Name + " has been un-hidden from " + victim.Name };
 				}
@@ -68,6 +68,25 @@ namespace TargetedGhostmode
 								plugin.Functions.Unhide(player1, player2);
 
 					return new[] { "Unhiding everyone from everyone." };
+				}
+
+				case "debug":
+				{
+					List<Player> victims = plugin.Server.GetPlayers(args[1]);
+					List<Player> targets = plugin.Server.GetPlayers(args[2]);
+
+					Player target = targets.OrderBy(ply => ply.Name.Length).First();
+					Player victim = victims.OrderBy(ply => ply.Name.Length).First();
+
+					foreach (int pid in TargetedGhostmode.Hidden.Keys)
+					{
+						plugin.Info("Key: " + pid);
+						foreach (int pid2 in TargetedGhostmode.Hidden[pid])
+							plugin.Info("Value: " + pid2);
+					}
+					
+					return new[] { Methods.CheckHidden(victim.PlayerId, target.PlayerId).ToString() };
+
 				}
 				default:
 					return new[] { GetUsage() };

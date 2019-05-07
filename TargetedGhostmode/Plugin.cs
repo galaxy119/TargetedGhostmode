@@ -8,7 +8,7 @@ namespace TargetedGhostmode
 		name = "Targeted Ghostmode",
 		description = "An api for creating targeted ghostmode.",
 		id = "joker.TargetGhostmode",
-		version = "1.0.0",
+		version = "1.0.5",
 		SmodMajor = 3,
 		SmodMinor = 4,
 		SmodRevision = 0
@@ -22,7 +22,6 @@ namespace TargetedGhostmode
 		public override void Register()
 		{
 			Patch.PatchMethodUsingHarmony();
-			
 			
 			Functions = new Methods(this);
 			
